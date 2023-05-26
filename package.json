@@ -1,0 +1,13 @@
+{
+  "name": "xlsx-to-json",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "node xlsx-to-json.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  }
+}
