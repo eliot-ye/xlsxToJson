@@ -4,18 +4,15 @@ const fs = require("fs");
 const XLSX = require("xlsx");
 
 /**
+ * 将 Excel 文件 (.xlsx) 转换为一个或多个 JSON 文件。Excel 文件中的每个工作表将转换为一个同名的 JSON 文件，这个 JSON 文件将被创建在与源 Excel 文件相同的文件夹中。如果工作表中没有使用指定键代码的列，那么该工作表将被跳过。如果工作表具有使用指定键代码的列，但整个工作表为空，则该工作表也将被跳过。
  *
- * @typedef {Object} Option
- * @property {string} filePath
- * @property {string} [keyCode]
- * @property {string} [valueCode]
+ * @param {XlsxToJsonOption} option - 包含以下属性的对象：
+ *     - filePath：源 Excel 文件的路径。
+ *     - keyCode：Excel 表中包含键的列的名称。
+ *     - valueCode：Excel 表中包含值的列的名称。
+ * @return {void} 该函数不返回任何值。
  */
 
-/**
- *
- * @param {Option} option
- * @returns
- */
 exports.xlsxToJson = (option) => {
   const keyCode = option.keyCode || "Code";
   const valueCode = option.valueCode || "Value";

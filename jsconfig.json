@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "checkJs": true
+  },
+  "include": [
+    "*.js",
+    "*.d.ts"
+  ],
+  "exclude": [
+    "node_modules/**"
+  ],
+}

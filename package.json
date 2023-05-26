@@ -1,12 +1,12 @@
 {
   "name": "xlsx-to-json",
   "version": "1.0.0",
-  "description": "",
+  "description": "将 Excel 文件 (.xlsx) 转换为一个或多个 JSON 文件。",
   "main": "start.js",
-  "scripts": {
-    "start": "node start.js"
+  "bin": {
+    "start": "./start.js"
   },
-  "author": "",
+  "author": "Eliot",
   "license": "ISC",
   "dependencies": {
     "commander": "^10.0.1",
