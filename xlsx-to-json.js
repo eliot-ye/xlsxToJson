@@ -3,43 +3,71 @@
 const fs = require("fs");
 const XLSX = require("xlsx");
 
-const filePath = "/Users/eliot/Downloads/";
-const fileName = "language_mapping_to_mtel_v0.2";
-const dirPath = `${filePath}${fileName}`;
+/**
+ *
+ * @typedef {Object} Option
+ * @property {string} filePath
+ * @property {string} [keyCode]
+ * @property {string} [valueCode]
+ */
 
-const keyCode = "Code";
-const valueCode = "final";
+/**
+ *
+ * @param {Option} option
+ * @returns
+ */
+exports.xlsxToJson = (option) => {
+  const keyCode = option.keyCode || "Code";
+  const valueCode = option.valueCode || "Value";
 
-// 读取Excel文件
-const workbook = XLSX.readFile(`${dirPath}.xlsx`);
-
-try {
-  fs.readdirSync(`${dirPath}`);
-  fs.rmSync(`${dirPath}`, { recursive: true });
-  fs.mkdirSync(`${dirPath}`);
-} catch (error) {
-  fs.mkdirSync(`${dirPath}`);
-}
-
-workbook.SheetNames.forEach((sheetName) => {
-  const worksheet = workbook.Sheets[sheetName];
-  const data = XLSX.utils.sheet_to_json(worksheet);
-
-  if (data.length == 0) {
-    return;
-  }
-  if (!data[0][keyCode]) {
+  if (!option.filePath) {
     return;
   }
 
-  const result = {};
-  data.forEach((row) => {
-    result[row[keyCode].replace(/"/g, "").replace("    ", "")] = row[valueCode]
-      .replace('",', "")
-      .replace(/^(?:")/, "");
+  const filePathList = option.filePath.split("/");
+  const fileFullName = filePathList.pop();
+
+  if (!fileFullName) {
+    return;
+  }
+
+  const fileFullNameList = fileFullName.split(".");
+  fileFullNameList.pop();
+  const fileName = fileFullNameList.join(".");
+
+  const dirPath = `${filePathList.join("/")}/${fileName}`;
+  try {
+    fs.readdirSync(`${dirPath}`);
+    fs.rmSync(`${dirPath}`, { recursive: true });
+    fs.mkdirSync(`${dirPath}`);
+  } catch (error) {
+    fs.mkdirSync(`${dirPath}`);
+  }
+
+  // 读取Excel文件
+  const workbook = XLSX.readFile(option.filePath);
+  workbook.SheetNames.forEach((sheetName) => {
+    const worksheet = workbook.Sheets[sheetName];
+    const data = XLSX.utils.sheet_to_json(worksheet);
+
+    if (data.length == 0) {
+      return;
+    }
+    if (!data[0][keyCode]) {
+      return;
+    }
+
+    const result = {};
+    data.forEach((row) => {
+      result[row[keyCode].replace(/"/g, "").replace("    ", "")] = row[
+        valueCode
+      ]
+        .replace('",', "")
+        .replace(/^(?:")/, "");
+    });
+
+    const resultStr = JSON.stringify(result);
+
+    fs.writeFile(`${dirPath}/${sheetName}.json`, resultStr, {}, () => {});
   });
-
-  const resultStr = JSON.stringify(result);
-
-  fs.writeFile(`${dirPath}/${sheetName}.json`, resultStr, {}, () => {});
-});
+};

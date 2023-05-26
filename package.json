@@ -2,12 +2,14 @@
   "name": "xlsx-to-json",
   "version": "1.0.0",
   "description": "",
+  "main": "start.js",
   "scripts": {
-    "start": "node xlsx-to-json.js"
+    "start": "node start.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "commander": "^10.0.1",
     "xlsx": "^0.18.5"
   }
 }
