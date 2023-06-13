@@ -1,5 +1,12 @@
-interface XlsxToJsonOption {
+interface Options {
+  keyCode: string;
+  valueCode: string;
+}
+
+interface XlsxToJsonOption extends Options {
   filePath: string;
-  keyCode?: string;
-  valueCode?: string;
+}
+
+interface JsonToXlsxOption extends Options {
+  dirPath: string;
 }

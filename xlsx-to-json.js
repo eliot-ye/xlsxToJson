@@ -14,8 +14,8 @@ const XLSX = require("xlsx");
  */
 
 exports.xlsxToJson = (option) => {
-  const keyCode = option.keyCode || "Code";
-  const valueCode = option.valueCode || "Value";
+  const keyCode = option.keyCode;
+  const valueCode = option.valueCode;
 
   if (!option.filePath) {
     return;
@@ -60,13 +60,18 @@ exports.xlsxToJson = (option) => {
       let jsonValue = row[valueCode];
 
       try {
-        const _jsonValue = jsonValue.replace(/",/g, '"').replace(/\\\\"/g, "\\\"")
+        const _jsonValue = jsonValue
+          .replace(/",/g, '"')
+          .replace(/\\\\"/g, '\\"');
         // console.log("jsonValue1", jsonKey, _jsonValue);
         jsonValue = JSON.parse(_jsonValue);
         // console.log("jsonValue2", jsonValue);
       } catch (error) {
         // console.log(error);
-        jsonValue = jsonValue.replace('",', "").replace(/^(?:")/, "").replace(/\\\"/g, "\"");
+        jsonValue = jsonValue
+          .replace('",', "")
+          .replace(/^(?:")/, "")
+          .replace(/\\\"/g, '"');
       }
 
       result[jsonKey] = jsonValue;
