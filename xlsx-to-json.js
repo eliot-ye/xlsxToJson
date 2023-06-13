@@ -56,11 +56,20 @@ exports.xlsxToJson = (option) => {
 
     const result = {};
     data.forEach((row) => {
-      result[row[keyCode].replace(/"/g, "").replace("    ", "")] = row[
-        valueCode
-      ]
-        .replace('",', "")
-        .replace(/^(?:")/, "");
+      const jsonKey = row[keyCode].replace(/"/g, "").replace("    ", "");
+      let jsonValue = row[valueCode];
+
+      try {
+        const _jsonValue = jsonValue.replace(/",/g, '"').replace(/\\\\"/g, "\\\"")
+        // console.log("jsonValue1", jsonKey, _jsonValue);
+        jsonValue = JSON.parse(_jsonValue);
+        // console.log("jsonValue2", jsonValue);
+      } catch (error) {
+        // console.log(error);
+        jsonValue = jsonValue.replace('",', "").replace(/^(?:")/, "").replace(/\\\"/g, "\"");
+      }
+
+      result[jsonKey] = jsonValue;
     });
 
     const resultStr = JSON.stringify(result);
